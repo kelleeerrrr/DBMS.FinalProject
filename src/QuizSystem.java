@@ -52,7 +52,7 @@ class Question {
 }
 
 class QuizSystem {
-    static final String DB_URL = "jdbc:mysql://localhost:3306/db";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/QuizSystem";
     static final String DB_USERNAME = "root"; // 
     static final String DB_PASSWORD = "Keller "; // 
 
