@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class QuizSystem {
 
+
     private static final String DB_URL = "jdbc:mysql://localhost:3306/db"; // Update if needed
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "Keller"; // Replace with your MySQL password
@@ -13,47 +14,57 @@ public class QuizSystem {
         Scanner scanner = new Scanner(System.in);
         int choice;
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
-            System.out.println("Connected to the database successfully!");
+        try {
+            // Load JDBC driver (if needed)
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-            do {
-                System.out.println("+-----------------------------+");
-                System.out.println("| ********** Main Menu ********* |");
-                System.out.println("+-----------------------------+");
-                System.out.println("| 1. Admin SignUp             |");
-                System.out.println("| 2. User SignUp              |");
-                System.out.println("| 3. Admin Login              |");
-                System.out.println("| 4. User Login               |");
-                System.out.println("| 5. Exit                     |");
-                System.out.println("+-----------------------------+");
+            // Establish the connection to the database
+            try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
+                System.out.println("Connected to the database successfully!");
 
-                System.out.print("Enter choice: ");
-                choice = scanner.nextInt();
-                scanner.nextLine();
+                // Main menu loop
+                do {
+                    System.out.println("+-----------------------------+");
+                    System.out.println("| ********** Main Menu ********* |");
+                    System.out.println("+-----------------------------+");
+                    System.out.println("| 1. Admin SignUp             |");
+                    System.out.println("| 2. User SignUp              |");
+                    System.out.println("| 3. Admin Login              |");
+                    System.out.println("| 4. User Login               |");
+                    System.out.println("| 5. Exit                     |");
+                    System.out.println("+-----------------------------+");
 
-                switch (choice) {
-                    case 1:
-                        signUp(connection, scanner, "admin");
-                        break;
-                    case 2:
-                        signUp(connection, scanner, "user");
-                        break;
-                    case 3:
-                        login(connection, scanner, "admin");
-                        break;
-                    case 4:
-                        login(connection, scanner, "user");
-                        break;
-                    case 5:
-                        System.out.println("Exiting application.");
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Try again.");
-                }
-            } while (choice != 5);
+                    System.out.print("Enter choice: ");
+                    choice = scanner.nextInt();
+                    scanner.nextLine();
 
-        } catch (SQLException e) {
-            System.out.println("Error connecting to the database: " + e.getMessage());
+                    switch (choice) {
+                        case 1:
+                            signUp(connection, scanner, "admin");
+                            break;
+                        case 2:
+                            signUp(connection, scanner, "user");
+                            break;
+                        case 3:
+                            login(connection, scanner, "admin");
+                            break;
+                        case 4:
+                            login(connection, scanner, "user");
+                            break;
+                        case 5:
+                            System.out.println("Exiting application.");
+                            break;
+                        default:
+                            System.out.println("Invalid choice. Try again.");
+                    }
+                } while (choice != 5);
+
+            } catch (SQLException e) {
+                System.out.println("Error connecting to the database: " + e.getMessage());
+            }
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("JDBC Driver not found: " + e.getMessage());
         }
     }
 
